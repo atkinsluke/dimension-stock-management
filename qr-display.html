@@ -186,6 +186,12 @@
         <div class="upload-section">
             <input type="file" id="fileInput" accept=".xlsx,.xls" />
             <label for="fileInput" class="upload-btn">Upload Stock Items Excel File</label>
+            <p style="margin-top: 15px; opacity: 0.7; font-size: 0.9rem;">
+                Upload once - QR codes will stay loaded even after refreshing the page
+            </p>
+            <button class="upload-btn" onclick="clearSavedData()" style="margin-top: 15px; background: rgba(220, 53, 69, 0.3);">
+                Clear Saved Data
+            </button>
         </div>
 
         <div id="qrDisplay"></div>
@@ -208,6 +214,20 @@
 
         fileInput.addEventListener('change', handleFile);
 
+        // Check if we have saved data on page load
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('qrDisplayData');
+            if (savedData) {
+                try {
+                    const materials = JSON.parse(savedData);
+                    generateQRCodesByGroup(materials);
+                    document.querySelector('.upload-section').style.display = 'none';
+                } catch (error) {
+                    console.error('Error loading saved data:', error);
+                }
+            }
+        });
+
         function handleFile(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -222,7 +242,15 @@
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                 const materials = XLSX.utils.sheet_to_json(firstSheet);
 
+                // Save data to localStorage
+                try {
+                    localStorage.setItem('qrDisplayData', JSON.stringify(materials));
+                } catch (error) {
+                    console.error('Error saving data:', error);
+                }
+
                 generateQRCodesByGroup(materials);
+                document.querySelector('.upload-section').style.display = 'none';
             };
             reader.readAsArrayBuffer(file);
         }
@@ -291,6 +319,13 @@
                 groupSection.appendChild(qrGrid);
                 qrDisplay.appendChild(groupSection);
             });
+        }
+
+        function clearSavedData() {
+            if (confirm('Are you sure you want to clear the saved QR codes? You will need to upload the Excel file again.')) {
+                localStorage.removeItem('qrDisplayData');
+                location.reload();
+            }
         }
     </script>
 </body>
