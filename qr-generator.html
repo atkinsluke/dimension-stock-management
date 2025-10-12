@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - Dimension Print Services</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d1b3d 25%, #4a1942 50%, #2d1b3d 75%, #1e3a5f 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .upload-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .upload-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .print-btn {
+            background: rgba(74, 25, 66, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .print-btn:hover {
+            background: rgba(74, 25, 66, 0.8);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .qr-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .qr-code-container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .inventory-id {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .material-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 40px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                animation: none;
+            }
+            
+            .upload-section, .controls, h1, .subtitle {
+                display: none;
+            }
+
+            .qr-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            .qr-card {
+                background: white;
+                border: 1px solid #ccc;
+                color: black;
+            }
+
+            .inventory-id, .material-desc {
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dimension Print Services</h1>
+        <p class="subtitle">QR Code Generator</p>
+
+        <div class="upload-section">
+            <input type="file" id="fileInput" accept=".xlsx,.xls" />
+            <label for="fileInput" class="upload-btn">Upload Stock Items Excel File</label>
+        </div>
+
+        <div class="controls">
+            <button class="print-btn" id="printBtn" onclick="window.print()">Print QR Codes</button>
+        </div>
+
+        <div id="qrGrid" class="qr-grid"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const qrGrid = document.getElementById('qrGrid');
+        const printBtn = document.getElementById('printBtn');
+
+        fileInput.addEventListener('change', handleFile);
+
+        function handleFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            qrGrid.innerHTML = '<div class="loading">Generating QR codes...</div>';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const materials = XLSX.utils.sheet_to_json(firstSheet);
+
+                generateQRCodes(materials);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function generateQRCodes(materials) {
+            qrGrid.innerHTML = '';
+            
+            materials.forEach((material, index) => {
+                const card = document.createElement('div');
+                card.className = 'qr-card';
+                
+                const qrContainer = document.createElement('div');
+                qrContainer.className = 'qr-code-container';
+                qrContainer.id = `qr-${index}`;
+                
+                const inventoryId = document.createElement('div');
+                inventoryId.className = 'inventory-id';
+                inventoryId.textContent = material['Inventory ID'];
+                
+                const description = document.createElement('div');
+                description.className = 'material-desc';
+                description.textContent = material['Description'];
+                
+                card.appendChild(qrContainer);
+                card.appendChild(inventoryId);
+                card.appendChild(description);
+                qrGrid.appendChild(card);
+                
+                // Generate QR code
+                new QRCode(qrContainer, {
+                    text: material['Inventory ID'],
+                    width: 180,
+                    height: 180,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            });
+
+            printBtn.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>

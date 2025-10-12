@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock System - Dimension Print Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d1b3d 25%, #4a1942 50%, #2d1b3d 75%, #1e3a5f 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(74, 25, 66, 0.1) 0%, rgba(30, 58, 95, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            opacity: 0.85;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(74, 25, 66, 0.8);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .primary-card {
+            grid-column: span 1;
+        }
+
+        .secondary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .card {
+                min-height: 240px;
+            }
+
+            .card-icon {
+                font-size: 3rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Dimension Print Services</h1>
+            <p class="tagline">Stock Tracking & Management System</p>
+        </div>
+
+        <div class="grid">
+            <!-- Mobile Scanner -->
+            <a href="mobile-scanner.html" class="card primary-card">
+                <div class="card-badge">Shop Floor</div>
+                <div class="card-icon">📱</div>
+                <div class="card-title">Mobile Scanner</div>
+                <div class="card-description">
+                    Scan QR codes on the shop floor using your Android tablet or phone. Quick and easy stock logging.
+                </div>
+            </a>
+
+            <!-- Desktop Entry -->
+            <a href="desktop-entry.html" class="card primary-card">
+                <div class="card-badge">Office</div>
+                <div class="card-icon">💻</div>
+                <div class="card-title">Desktop Entry</div>
+                <div class="card-description">
+                    Manual stock entry for office use. Select materials from dropdown menus and record usage.
+                </div>
+            </a>
+
+            <!-- Analytics Dashboard -->
+            <a href="dashboard.html" class="card primary-card">
+                <div class="card-badge">Management</div>
+                <div class="card-icon">📊</div>
+                <div class="card-title">Analytics Dashboard</div>
+                <div class="card-description">
+                    View charts, stats, and reports. Filter by date, job number, and view daily activity logs.
+                </div>
+            </a>
+        </div>
+
+        <div class="secondary-cards">
+            <!-- QR Display Screen -->
+            <a href="qr-display.html" class="card">
+                <div class="card-icon">📺</div>
+                <div class="card-title">QR Display Screen</div>
+                <div class="card-description">
+                    Display QR codes on a monitor for easy scanning. Organized by material groups.
+                </div>
+            </a>
+
+            <!-- QR Code Generator -->
+            <a href="qr-generator.html" class="card">
+                <div class="card-icon">🖨️</div>
+                <div class="card-title">Print QR Codes</div>
+                <div class="card-description">
+                    Generate printable QR codes for all materials to stick on shelves and bins.
+                </div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>Stock System v1.0 | Dimension Print Services</p>
+        </div>
+    </div>
+</body>
+</html>

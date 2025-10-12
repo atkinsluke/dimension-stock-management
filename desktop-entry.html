@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Entry - Dimension Print Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d1b3d 25%, #4a1942 50%, #2d1b3d 75%, #1e3a5f 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            color: white;
+            padding: 40px 20px;
+            transition: background 0.5s ease;
+        }
+
+        body.error {
+            background: linear-gradient(135deg, #4a1515 0%, #2d1b1b 50%, #4a1515 100%);
+        }
+
+        body.success {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d1b3d 25%, #4a1942 50%, #2d1b3d 75%, #1e3a5f 100%);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        select option {
+            background: #2d1b3d;
+            color: white;
+            padding: 10px;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 16px;
+            font-size: 1.05rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            background: rgba(74, 25, 66, 0.6);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background: rgba(74, 25, 66, 0.8);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .reset-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 25px;
+            display: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.error {
+            background: rgba(220, 53, 69, 0.3);
+            border: 1px solid rgba(220, 53, 69, 0.5);
+        }
+
+        .status-message.success {
+            background: rgba(40, 167, 69, 0.3);
+            border: 1px solid rgba(40, 167, 69, 0.5);
+        }
+
+        .warning-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        body.error .warning-icon {
+            display: block;
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dimension Print Services</h1>
+        <p class="subtitle">Stock Entry System</p>
+        
+        <div class="form-card">
+            <form id="stockForm">
+                <div class="form-group">
+                    <label for="materialGroup">Material Group *</label>
+                    <select id="materialGroup" required>
+                        <option value="">Select material group...</option>
+                        <option value="group1">Print stock Group 1 - Lamination</option>
+                        <option value="group2">Print stock Group 2 - Films & Paper</option>
+                        <option value="group3">Print stock Group 3 - Self Adhesive</option>
+                        <option value="group4">Print stock Group 4 - Acrylic</option>
+                        <option value="group5">Print stock Group 5 - Corrugated & Xanita</option>
+                        <option value="group6">Print stock Group 6 - Solid Board</option>
+                        <option value="group7">Print stock Group 7 - Konica Materials</option>
+                        <option value="group8">Print stock Group 8 - Other Plastics</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="material">Material *</label>
+                    <select id="material" required disabled>
+                        <option value="">Select a material group first...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity *</label>
+                    <input type="number" id="quantity" step="0.5" min="0" required placeholder="Enter quantity">
+                    <div class="helper-text">Use .5 for half units (e.g., 1.5, 2.5)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectNumber">Project Number *</label>
+                    <input type="text" id="projectNumber" required placeholder="Enter project number">
+                </div>
+
+                <div class="form-group">
+                    <label for="operator">Operator *</label>
+                    <select id="operator" required>
+                        <option value="">Select operator...</option>
+                        <option value="Mark McCann">Mark McCann</option>
+                        <option value="John Pugh">John Pugh</option>
+                        <option value="Andre Zinenko">Andre Zinenko</option>
+                        <option value="Nathan Dharwhker">Nathan Dharwhker</option>
+                        <option value="Inga Klevasa">Inga Klevasa</option>
+                        <option value="Maciej Chicos">Maciej Chicos</option>
+                        <option value="Tomas Vascillica">Tomas Vascillica</option>
+                        <option value="Kamil Bugenski">Kamil Bugenski</option>
+                        <option value="Vascillica Cosma">Vascillica Cosma</option>
+                        <option value="Jamie Bell">Jamie Bell</option>
+                        <option value="Luke Atkins">Luke Atkins</option>
+                        <option value="Laser Agency Staff">Laser Agency Staff</option>
+                        <option value="Print Agency Staff">Print Agency Staff</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="reset-btn" onclick="resetForm()">Reset</button>
+                    <button type="submit" class="submit-btn">Submit Entry</button>
+                </div>
+            </form>
+
+            <div class="status-message" id="statusMessage">
+                <div class="warning-icon">⚠️</div>
+                <span id="statusText"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANT: Replace this with your Google Apps Script web app URL
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby-8x2Z_cNcyMrAohMtZvOHcYK2RNDQfv9q0E45KLzbcSGeJpunR_awAyRULqMGFxUeFw/exec';
+
+        // Material database organized by groups
+        const MATERIAL_GROUPS = {
+            group1: {
+                "PRT-ROLL-ADH-0001": "900E Medium Tack Paper Application Tape - 1220 x 91.4m",
+                "PRT-ROLL-ADH-0002": "30mic Ultracrystaline Optically Clear Mount Film - 1050 x 50m",
+                "PRT-ROLL-ADH-0003": "12mic Mount Film Adhesive - 1370mm x 50m",
+                "PRT-ROLL-ADH-0004": "3900 – DOUBLE SIDED TAPE (WHITE) High Bond 1220X50M",
+                "PRT-ROLL-ADH-0006": "R-Tape AT60N Low Tack Clear Application Tape 1220x91.4",
+                "PRT-ROLL-ADH-0007": "R-Tape ConforMask 4075RLA Low Tack Conform Application Tape 1220x91.4",
+                "PRT-ROLL-ADH-0008": "80mic ASLAN DFP41 Gloss Clear Window SAV - 1370mm x 50m",
+                "PRT-ROLL-ADH-0009": "80mic Ritrama L100 Gloss Silver Application Tape - 1220x100m",
+                "PRT-ROLL-ADH-0010": "75mic ASLAN TF210 High Tack Clear Apllication Tape - 1270x100m",
+                "PRT-ROLL-ADH-0011": "90gsm ASLAN TF 211 High Tack Paper Application Tape -  1270x91.4m"
+            },
+            group2: {
+                "PRT-ROLL-FLM-0002": "220mic Gloss Clear PVC - 1295mm x 50m",
+                "PRT-ROLL-FLM-0005": "205mic Coala Backlit S - 1520 x 30m",
+                "PRT-ROLL-FLM-0006": "180mic Dtec Easy Fit Clear Repositionable Film 1372mm 30m",
+                "PRT-ROLL-FLM-0007": "100mic Mactac Envision Matt Clear Removable Film - 1372 x 50m",
+                "PRT-ROLL-FLM-0008": "100mic Mactac IMAGin Matt White Removable Film - 1372 x 50m",
+                "PRT-ROLL-FLM-0009": "100mic Avery V3000 Removable Matt Clear Film - 1372 x 50m",
+                "PRT-ROLL-FLM-0010": "100mic Avery V3400 Removable Matt White Film - 1372 x 50m",
+                "PRT-ROLL-FLM-0011": "150mic Matt Clear Floor Film - 1372 x 50m",
+                "PRT-ROLL-FLM-0012": "250mic Matt Frosted Floor Film - 1372 x 50m",
+                "PRT-ROLL-FLM-0013": "205mic Coala PET Film Backlit (G) - 1520 x 30m"
+            },
+            group3: {
+                "PRT-ROLL-SAV-0001": "80mic ASLAN DFP41 Gloss Clear Window SAV - 1370mm x 50m",
+                "PRT-ROLL-SAV-0002": "80mic Poli Print 810 - Standard Gloss Clear SAV - 1370mm x 50m",
+                "PRT-ROLL-SAV-0003": "100mic Orajet 3164 Matte White SAV - 1370mm x 50m",
+                "PRT-ROLL-SAV-0004": "100mic JT5100 Gloss White SAV - 1370 x 50m",
+                "PRT-ROLL-SAV-0005": "100mic JT5100M Matt White SAV - 1370 x 50m",
+                "PRT-ROLL-SAV-0006": "85mic Dtec MPI3000 Gloss Clear SAV - 1370mm x 50m",
+                "PRT-ROLL-SAV-0007": "100mic Fellers Clearview Gloss White SAV - 1370 x 50m",
+                "PRT-ROLL-SAV-0008": "300mic JT Ultraflex 3001 Canvas - 1067 x 30m",
+                "PRT-ROLL-SAV-0009": "360gsm Litho Plus Matt Coated Paper - 1067 x 30m",
+                "PRT-ROLL-SAV-0010": "360gsm ECO PosterPaper BG+ Matt - 1067 x 30m",
+                "PRT-ROLL-SAV-0011": "360gsm Orajet 3336 Semi Gloss Grey Back SAV - 1370 x 50m"
+            },
+            group4: {
+                "PRT-SHT-ACR-0001": "2mm Clear - 153274 Perspex Clear XT - 1020x760mm",
+                "PRT-SHT-ACR-0002": "3mm Clear - 153273 Perspex Clear XT - 1020x760mm",
+                "PRT-SHT-ACR-0003": "5mm Clear - 153273 Perspex Clear XT - 1020x760mm",
+                "PRT-SHT-ACR-0004": "3mm Opal - 152282 Perspex Opal 030 XT - 1020x760mm",
+                "PRT-SHT-ACR-0005": "5mm Opal - 152281 Perspex Opal 030 XT - 1020x760mm",
+                "PRT-SHT-ACR-0006": "3mm White - 108006 Perspex White XT - 1020x760mm",
+                "PRT-SHT-ACR-0007": "5mm White - 108005 Perspex White XT - 1020x760mm",
+                "PRT-SHT-ACR-0008": "10mm Clear - 153270 Perspex Clear XT - 1020x760mm"
+            },
+            group5: {
+                "PRT-SHT-COR-0001": "E FLUTE 180DC/120KB - 1067x1575mm - FSC",
+                "PRT-SHT-COR-0002": "EB FLUTE 180DC/120KB - 1065x1575mm - FSC",
+                "PRT-SHT-COR-0004": "EB FLUTE 180DC/120KB - 1600x2150mm - FSC",
+                "PRT-SHT-COR-0005": "EB FLUTE 180DC/120KB - 2400x1600mm - FSC",
+                "PRT-SHT-COR-0007": "3mm XANITA - 1830x1830mm - FSC",
+                "PRT-SHT-COR-0008": "5mm XANITA - 1830x1830mm - FSC",
+                "PRT-SHT-COR-0009": "7mm XANITA - 1830x1830mm - FSC",
+                "PRT-SHT-COR-0010": "10mm XANITA - 1830x1830mm - FSC",
+                "PRT-SHT-COR-0011": "15mm XANITA - 1830x1830mm - FSC",
+                "PRT-SHT-COR-0012": "20mm XANITA - 1830x1830mm - FSC",
+                "PRT-SHT-COR-0013": "B FLUTE 180DC/120KB - 1500 x 1850mm - FSC"
+            },
+            group6: {
+                "PRT-SHT-DB-0002": "1500mic Libra GCDB - 1550x1040mm - FSC",
+                "PRT-SHT-DB-0003": "1250mic Libra GCDB - 1550x1040mm - FSC",
+                "PRT-SHT-DB-0005": "1250mic Libra GCDB - 1850x1250mm - FSC",
+                "PRT-SHT-DB-0006": "850mic Libra GCDB - 1550x1040mm - FSC",
+                "PRT-SHT-DB-0007": "850mic Libra GCDB - 1850x1250mm - FSC",
+                "PRT-SHT-DB-0008": "850mic Libra GCDB - 1250x850mm - FSC",
+                "PRT-SHT-DB-0009": "500mic Libra GCDB - 1550x1040mm - FSC",
+                "PRT-SHT-DB-0010": "800mic Libra MCB - 1250x850mm - FSC",
+                "PRT-SHT-DB-0011": "1000mic Libra MCB - 1250x850mm - FSC",
+                "PRT-SHT-DB-0012": "850mic Colorplan Ebony Black DB - 1550x1040mm - FSC",
+                "PRT-SHT-DB-0013": "1250mic INVERCOTE CREATO GLOSS FINISH - 740x1040mm - FSC"
+            },
+            group7: {
+                "PRT-SHT-KON-0001": "SYMBOL F/L SATIN 53X75 200GSM 750 X 320 (Packed in 150)",
+                "PRT-SHT-KON-0002": "UPM FINESSE SILK 250GSM 53X75 CUT TO: 750 X 320 (Packed in 250)",
+                "PRT-SHT-KON-0003": "UPM FINESSE SILK 300GSM 53X75 CUT TO: 750 X 320 (Packed in 250)",
+                "PRT-SHT-KON-0004": "UPM FINESSE SILK 350GSM 53X75 CUT TO: 750 X 320 (Packed in 125)",
+                "PRT-SHT-KON-0005": "R5 - 300gsm Digital Enhanced Silk - 320x450mm - FSC (Packed in 250)",
+                "PRT-SHT-KON-0006": "R5 - 300gsm Digital Enhanced Matt - 320x450mm - FSC (Packed in 250)",
+                "PRT-SHT-KON-0007": "R5 - 300gsm Digital Enhanced Gloss - 320x450mm - FSC (Packed in 250)",
+                "PRT-SHT-KON-0008": "SRA3 - 300gsm Digital Enhanced Silk - 320x450mm - FSC (Packed in 250)",
+                "PRT-SHT-KON-0009": "SRA3 - 300gsm Digital Enhanced Matt - 320x450mm - FSC (Packed in 250)"
+            },
+            group8: {
+                "PRT-SHT-PLA-0001": "2mm Clear PETG - 1025x1250mm",
+                "PRT-SHT-PLA-0002": "470mic VIPRINT ELEGANCE WHITE PP G02 - 1200x800mm",
+                "PRT-SHT-PLA-0003": "1mm Plyform M White PLY 2361 Matt HIPS - 820mm x 1240mm",
+                "PRT-SHT-PLA-0004": "3mm White FOAMEX PREMIUM - 1220x2440mm",
+                "PRT-SHT-PLA-0005": "5mm White FOAMEX PREMIUM - 1220x2440mm",
+                "PRT-SHT-PLA-0006": "10mm White FOAMEX PREMIUM - 1220x2440mm",
+                "PRT-SHT-PLA-0007": "20mm White FOAMEX PREMIUM - 1220x2440mm"
+            }
+        };
+
+        // Handle material group selection
+        document.getElementById('materialGroup').addEventListener('change', function() {
+            const group = this.value;
+            const materialSelect = document.getElementById('material');
+            
+            if (group) {
+                materialSelect.disabled = false;
+                materialSelect.innerHTML = '<option value="">Select material...</option>';
+                
+                const materials = MATERIAL_GROUPS[group];
+                for (const [code, description] of Object.entries(materials)) {
+                    const option = document.createElement('option');
+                    option.value = code;
+                    option.textContent = `${code} - ${description}`;
+                    materialSelect.appendChild(option);
+                }
+            } else {
+                materialSelect.disabled = true;
+                materialSelect.innerHTML = '<option value="">Select a material group first...</option>';
+            }
+        });
+
+        function resetForm() {
+            document.getElementById('stockForm').reset();
+            document.getElementById('material').disabled = true;
+            document.getElementById('material').innerHTML = '<option value="">Select a material group first...</option>';
+            document.getElementById('statusMessage').classList.remove('show');
+            document.body.classList.remove('error', 'success');
+        }
+
+        function showStatus(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            const statusText = document.getElementById('statusText');
+            
+            statusText.textContent = message;
+            statusMessage.className = 'status-message show ' + type;
+            
+            if (type === 'error') {
+                document.body.classList.add('error');
+                setTimeout(() => {
+                    document.body.classList.remove('error');
+                }, 3000);
+            }
+            
+            if (type === 'success') {
+                document.body.classList.add('success');
+            }
+        }
+
+        // Form submission
+        document.getElementById('stockForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const inventoryId = document.getElementById('material').value;
+            const quantity = parseFloat(document.getElementById('quantity').value);
+            const projectNumber = document.getElementById('projectNumber').value;
+            const operator = document.getElementById('operator').value;
+            const group = document.getElementById('materialGroup').value;
+            
+            // Validate quantity (must be whole or .5)
+            if (quantity % 0.5 !== 0) {
+                showStatus("Quantity must be whole numbers or .5 increments", "error");
+                return;
+            }
+            
+            const materialDescription = MATERIAL_GROUPS[group][inventoryId];
+            
+            const data = {
+                timestamp: new Date().toISOString(),
+                entryMethod: 'Desktop',
+                inventoryId: inventoryId,
+                materialDescription: materialDescription,
+                quantity: quantity,
+                projectNumber: projectNumber,
+                operator: operator
+            };
+            
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                showStatus("✓ Entry recorded successfully!", "success");
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    resetForm();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus("Failed to record entry. Check your internet connection.", "error");
+            }
+        });
+    </script>
+</body>
+</html>
