@@ -398,23 +398,30 @@
         }
 
         // Helper function to parse UK format dates (DD/MM/YYYY HH:MM:SS)
-        function parseUKDate(dateStr) {
+        function parseUKDate(dateStr, timeStr) {
             if (!dateStr) return new Date();
             
             // If it's already a proper ISO date, use it
-            if (dateStr.includes('T') || dateStr.includes('-')) {
+            if (typeof dateStr === 'string' && (dateStr.includes('T') || dateStr.includes('-'))) {
                 return new Date(dateStr);
             }
             
-            // Parse UK format: DD/MM/YYYY HH:MM:SS
-            const parts = dateStr.split(/[\s/:]+/);
-            if (parts.length >= 3) {
-                const day = parseInt(parts[0]);
-                const month = parseInt(parts[1]) - 1; // Month is 0-indexed
-                const year = parseInt(parts[2]);
-                const hour = parts.length > 3 ? parseInt(parts[3]) : 0;
-                const minute = parts.length > 4 ? parseInt(parts[4]) : 0;
-                const second = parts.length > 5 ? parseInt(parts[5]) : 0;
+            // Parse UK format: DD/MM/YYYY with separate time
+            const dateParts = String(dateStr).split(/[\/\s]+/);
+            if (dateParts.length >= 3) {
+                const day = parseInt(dateParts[0]);
+                const month = parseInt(dateParts[1]) - 1; // Month is 0-indexed
+                const year = parseInt(dateParts[2]);
+                
+                let hour = 0, minute = 0, second = 0;
+                
+                // Parse time if provided
+                if (timeStr) {
+                    const timeParts = String(timeStr).split(':');
+                    hour = timeParts[0] ? parseInt(timeParts[0]) : 0;
+                    minute = timeParts[1] ? parseInt(timeParts[1]) : 0;
+                    second = timeParts[2] ? parseInt(timeParts[2]) : 0;
+                }
                 
                 return new Date(year, month, day, hour, minute, second);
             }
@@ -441,7 +448,7 @@
 
             // Filter data
             let filteredData = allData.filter(row => {
-                const rowDate = parseUKDate(row.datetime);
+                const rowDate = parseUKDate(row.date, row.time);
                 const matchesDate = rowDate >= startDate && rowDate <= endDate;
                 const matchesJob = !jobNumber || String(row.projectnumber).toLowerCase().includes(jobNumber);
                 
@@ -456,7 +463,7 @@
             
             if (filteredData.length === 0) {
                 console.log('NO DATA MATCHED THE FILTER');
-                console.log('Sample row date for comparison:', allData[0] ? parseUKDate(allData[0].datetime) : 'no data');
+                console.log('Sample row date for comparison:', allData[0] ? parseUKDate(allData[0].date, allData[0].time) : 'no data');
             }
             
             displayDashboard(filteredData);
@@ -727,19 +734,22 @@
 
         function fillRecentEntriesTable(data) {
             const sorted = [...data].sort((a, b) => 
-                parseUKDate(b.datetime) - parseUKDate(a.datetime)
+                parseUKDate(b.date, b.time) - parseUKDate(a.date, a.time)
             ).slice(0, 20);
 
             const tbody = document.getElementById('recentEntriesTable');
-            tbody.innerHTML = sorted.map(row => `
-                <tr>
-                    <td>${parseUKDate(row.datetime).toLocaleString('en-GB')}</td>
-                    <td>${row.materialdescription || row.inventoryid}</td>
-                    <td>${row.quantity}</td>
-                    <td>${row.projectnumber}</td>
-                    <td>${row.operatorname}</td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = sorted.map(row => {
+                const fullDate = parseUKDate(row.date, row.time);
+                return `
+                    <tr>
+                        <td>${fullDate.toLocaleString('en-GB')}</td>
+                        <td>${row.materialdescription || row.inventoryid}</td>
+                        <td>${row.quantity}</td>
+                        <td>${row.projectnumber}</td>
+                        <td>${row.operatorname}</td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function showDailyList() {
@@ -755,7 +765,7 @@
 
             // Filter for specific day - compare just the date parts
             let filteredData = allData.filter(row => {
-                const rowDate = parseUKDate(row.datetime);
+                const rowDate = parseUKDate(row.date, row.time);
                 
                 // Compare year, month, and day only (ignore time)
                 const sameYear = rowDate.getFullYear() === startDate.getFullYear();
@@ -820,17 +830,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            ${filteredData.map(row => `
-                                <tr>
-                                    <td>${parseUKDate(row.datetime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
-                                    <td>${row.materialdescription || row.inventoryid}</td>
-                                    <td>${row.inventoryid}</td>
-                                    <td>${row.quantity}</td>
-                                    <td>${row.projectnumber}</td>
-                                    <td>${row.operatorname}</td>
-                                    <td>${row.entrymethod}</td>
-                                </tr>
-                            `).join('')}
+                            ${filteredData.map(row => {
+                                const fullDate = parseUKDate(row.date, row.time);
+                                return `
+                                    <tr>
+                                        <td>${fullDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</td>
+                                        <td>${row.materialdescription || row.inventoryid}</td>
+                                        <td>${row.inventoryid}</td>
+                                        <td>${row.quantity}</td>
+                                        <td>${row.projectnumber}</td>
+                                        <td>${row.operatorname}</td>
+                                        <td>${row.entrymethod}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
                         </tbody>
                     </table>
                 </div>
