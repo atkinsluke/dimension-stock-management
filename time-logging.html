@@ -470,8 +470,8 @@
                 jobNumber: jobNumber,
                 name: operatorName,
                 operation: document.getElementById('operation').value,
-                perm: operatorType === 'Perm' ? 'Yes' : 'No',
-                agency: operatorType === 'Agency' ? 'Yes' : 'No',
+                perm: operatorType === 'Perm' ? 'Perm' : 'Temp',
+                agency: operatorType === 'Agency' ? 'GI Group' : '',
                 stdHrs: stdHours.toFixed(2),
                 overtime: overtimeHours.toFixed(2),
                 date: document.getElementById('workDate').value
