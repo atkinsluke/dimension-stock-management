@@ -28,7 +28,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -50,18 +50,24 @@
             font-weight: 300;
         }
 
-        .grid {
+        .main-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             margin-bottom: 40px;
+        }
+
+        .secondary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .card {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 16px;
-            padding: 40px 30px;
+            padding: 35px 25px;
             text-align: center;
             transition: all 0.4s ease;
             cursor: pointer;
@@ -71,7 +77,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 280px;
+            min-height: 260px;
             position: relative;
             overflow: hidden;
         }
@@ -89,7 +95,7 @@
         }
 
         .card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px);
             background: rgba(255, 255, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.4);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -100,22 +106,22 @@
         }
 
         .card-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 3.5rem;
+            margin-bottom: 18px;
             position: relative;
             z-index: 1;
         }
 
         .card-title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             position: relative;
             z-index: 1;
         }
 
         .card-description {
-            font-size: 1rem;
+            font-size: 0.95rem;
             opacity: 0.85;
             line-height: 1.5;
             position: relative;
@@ -127,22 +133,21 @@
             top: 15px;
             right: 15px;
             background: rgba(74, 25, 66, 0.8);
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            z-index: 2;
         }
 
-        .primary-card {
-            grid-column: span 1;
-        }
-
-        .secondary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            text-align: center;
         }
 
         .footer {
@@ -163,7 +168,8 @@
             }
 
             .card {
-                min-height: 240px;
+                min-height: 220px;
+                padding: 30px 20px;
             }
 
             .card-icon {
@@ -171,7 +177,7 @@
             }
 
             .card-title {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
         }
     </style>
@@ -183,54 +189,68 @@
             <p class="tagline">Stock Tracking & Management System</p>
         </div>
 
-        <div class="grid">
-            <!-- Mobile Scanner -->
-            <a href="mobile-scanner.html" class="card primary-card">
+        <div class="main-grid">
+            <a href="mobile-scanner.html" class="card">
                 <div class="card-badge">Shop Floor</div>
                 <div class="card-icon">📱</div>
                 <div class="card-title">Mobile Scanner</div>
                 <div class="card-description">
-                    Scan QR codes on the shop floor using your Android tablet or phone. Quick and easy stock logging.
+                    Scan QR codes on the shop floor using your Android tablet or phone.
                 </div>
             </a>
 
-            <!-- Desktop Entry -->
-            <a href="desktop-entry.html" class="card primary-card">
+            <a href="time-logging.html" class="card">
+                <div class="card-badge">Time Tracking</div>
+                <div class="card-icon">⏰</div>
+                <div class="card-title">Log Hours</div>
+                <div class="card-description">
+                    Record working hours by job, operation, and operator.
+                </div>
+            </a>
+
+            <a href="desktop-entry.html" class="card">
                 <div class="card-badge">Office</div>
                 <div class="card-icon">💻</div>
                 <div class="card-title">Desktop Entry</div>
                 <div class="card-description">
-                    Manual stock entry for office use. Select materials from dropdown menus and record usage.
+                    Manual stock entry with dropdown menus for office use.
                 </div>
             </a>
 
-            <!-- Analytics Dashboard -->
-            <a href="dashboard.html" class="card primary-card">
+            <a href="dashboard.html" class="card">
                 <div class="card-badge">Management</div>
                 <div class="card-icon">📊</div>
                 <div class="card-title">Analytics Dashboard</div>
                 <div class="card-description">
-                    View charts, stats, and reports. Filter by date, job number, and view daily activity logs.
+                    View charts, stats, reports, and daily activity logs.
                 </div>
             </a>
         </div>
 
-        <div class="secondary-cards">
-            <!-- QR Display Screen -->
+        <p class="section-title">Setup & Configuration</p>
+
+        <div class="secondary-grid">
             <a href="qr-display.html" class="card">
                 <div class="card-icon">📺</div>
                 <div class="card-title">QR Display Screen</div>
                 <div class="card-description">
-                    Display QR codes on a monitor for easy scanning. Organized by material groups.
+                    Display QR codes on a monitor for easy scanning.
                 </div>
             </a>
 
-            <!-- QR Code Generator -->
             <a href="qr-generator.html" class="card">
                 <div class="card-icon">🖨️</div>
                 <div class="card-title">Print QR Codes</div>
                 <div class="card-description">
-                    Generate printable QR codes for all materials to stick on shelves and bins.
+                    Generate printable QR codes for all materials.
+                </div>
+            </a>
+
+            <a href="settings.html" class="card">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">Settings</div>
+                <div class="card-description">
+                    Manage operators and system configuration.
                 </div>
             </a>
         </div>
