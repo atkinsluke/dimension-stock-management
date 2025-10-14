@@ -261,18 +261,44 @@
 
         async function loadOperators() {
             try {
-                const response = await fetch(OPERATORS_API_URL);
+                const response = await fetch(OPERATORS_API_URL, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.status === 'success') {
                     operators = data.operators;
                     renderOperators();
                 } else {
-                    showStatus('Error loading operators from sheet', 'error');
+                    throw new Error(data.error || 'Failed to load operators');
                 }
             } catch (error) {
                 console.error('Error loading operators:', error);
-                showStatus('Failed to load operators. Check console for details.', 'error');
+                showStatus('Could not load operators from Google Sheet. Using local data.', 'error');
+                
+                // Fallback to default operators
+                operators = {
+                    'Mark McCann': 'Perm',
+                    'John Pugh': 'Perm',
+                    'Andre Zinenko': 'Perm',
+                    'Nathan Dharwhker': 'Perm',
+                    'Inga Klevasa': 'Perm',
+                    'Maciej Chicos': 'Perm',
+                    'Tomas Vascillica': 'Perm',
+                    'Kamil Bugenski': 'Perm',
+                    'Vascillica Cosma': 'Perm',
+                    'Jamie Bell': 'Perm',
+                    'Luke Atkins': 'Perm',
+                    'Laser Agency Staff': 'Agency',
+                    'Print Agency Staff': 'Agency'
+                };
+                renderOperators();
             }
         }
 
