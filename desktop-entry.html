@@ -255,10 +255,8 @@
     </div>
 
     <script>
-        // IMPORTANT: Replace this with your Google Apps Script web app URL
         const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby-8x2Z_cNcyMrAohMtZvOHcYK2RNDQfv9q0E45KLzbcSGeJpunR_awAyRULqMGFxUeFw/exec';
 
-        // Material database organized by groups
         const MATERIAL_GROUPS = {
             group1: {
                 "PRT-ROLL-ADH-0001": "900E Medium Tack Paper Application Tape - 1220 x 91.4m",
@@ -266,96 +264,95 @@
                 "PRT-ROLL-ADH-0003": "12mic Mount Film Adhesive - 1370mm x 50m",
                 "PRT-ROLL-ADH-0004": "3900 – DOUBLE SIDED TAPE (WHITE) High Bond 1220X50M",
                 "PRT-ROLL-ADH-0006": "R-Tape AT60N Low Tack Clear Application Tape 1220x91.4",
-                "PRT-ROLL-ADH-0007": "R-Tape ConforMask 4075RLA Low Tack Conform Application Tape 1220x91.4",
-                "PRT-ROLL-ADH-0008": "80mic ASLAN DFP41 Gloss Clear Window SAV - 1370mm x 50m",
-                "PRT-ROLL-ADH-0009": "80mic Ritrama L100 Gloss Silver Application Tape - 1220x100m",
-                "PRT-ROLL-ADH-0010": "75mic ASLAN TF210 High Tack Clear Apllication Tape - 1270x100m",
-                "PRT-ROLL-ADH-0011": "90gsm ASLAN TF 211 High Tack Paper Application Tape -  1270x91.4m"
+                "PRT-ROLL-ADH-0007": "65mic VHB Adhesive Red Liner Glue DORO 465 - 1220mm x 50m",
+                "PRT-ROLL-LAM-0001": "80mic Essential Gloss Laminate - 1370 x 50m",
+                "PRT-ROLL-LAM-0002": "80mic Essential Matt Laminate - 1370 x 50m",
+                "PRT-ROLL-LAM-0003": "Dry Wipe Laminate - 1270 x 1m",
+                "PRT-ROLL-LAM-0004": "DTEC Floor Laminate - 1310 x 50m"
             },
             group2: {
                 "PRT-ROLL-FLM-0002": "220mic Gloss Clear PVC - 1295mm x 50m",
                 "PRT-ROLL-FLM-0005": "205mic Coala Backlit S - 1520 x 30m",
                 "PRT-ROLL-FLM-0006": "180mic Dtec Easy Fit Clear Repositionable Film 1372mm 30m",
-                "PRT-ROLL-FLM-0007": "100mic Mactac Envision Matt Clear Removable Film - 1372 x 50m",
-                "PRT-ROLL-FLM-0008": "100mic Mactac IMAGin Matt White Removable Film - 1372 x 50m",
-                "PRT-ROLL-FLM-0009": "100mic Avery V3000 Removable Matt Clear Film - 1372 x 50m",
-                "PRT-ROLL-FLM-0010": "100mic Avery V3400 Removable Matt White Film - 1372 x 50m",
-                "PRT-ROLL-FLM-0011": "150mic Matt Clear Floor Film - 1372 x 50m",
-                "PRT-ROLL-FLM-0012": "250mic Matt Frosted Floor Film - 1372 x 50m",
-                "PRT-ROLL-FLM-0013": "205mic Coala PET Film Backlit (G) - 1520 x 30m"
+                "PRT-ROLL-FLM-0007": "465mic TPU500 Grey Back -  POP UP - 1524x50m",
+                "PRT-ROLL-FLM-0008": "230mic 230STL  Kernow Ultimate Grey Back PULL UP - 1270mm x 30m",
+                "PRT-ROLL-FLM-0009": "122791 Dtec Tearproof Matt Synthetic Paper 1524mm 30m",
+                "PRT-ROLL-MAG-0001": "600mic Kinetix MS600 - Magnetic Sheet White Matt - 1200mm x 20m",
+                "PRT-ROLL-MAG-0002": "600mic Kinetix MS600 - Magnetic Sheet White Matt - 1020mm x 20m",
+                "PRT-ROLL-PPR-0002": "250gsm Coala Wall Design - 1372 x 50m",
+                "PRT-ROLL-PPR-0004": "200gsm Metro Vibe Satin Poster Paper - 1372mm x 50m"
             },
             group3: {
                 "PRT-ROLL-SAV-0001": "80mic ASLAN DFP41 Gloss Clear Window SAV - 1370mm x 50m",
                 "PRT-ROLL-SAV-0002": "80mic Poli Print 810 - Standard Gloss Clear SAV - 1370mm x 50m",
                 "PRT-ROLL-SAV-0003": "100mic Orajet 3164 Matte White SAV - 1370mm x 50m",
-                "PRT-ROLL-SAV-0004": "100mic JT5100 Gloss White SAV - 1370 x 50m",
-                "PRT-ROLL-SAV-0005": "100mic JT5100M Matt White SAV - 1370 x 50m",
-                "PRT-ROLL-SAV-0006": "85mic Dtec MPI3000 Gloss Clear SAV - 1370mm x 50m",
-                "PRT-ROLL-SAV-0007": "100mic Fellers Clearview Gloss White SAV - 1370 x 50m",
-                "PRT-ROLL-SAV-0008": "300mic JT Ultraflex 3001 Canvas - 1067 x 30m",
-                "PRT-ROLL-SAV-0009": "360gsm Litho Plus Matt Coated Paper - 1067 x 30m",
-                "PRT-ROLL-SAV-0010": "360gsm ECO PosterPaper BG+ Matt - 1067 x 30m",
-                "PRT-ROLL-SAV-0011": "360gsm Orajet 3336 Semi Gloss Grey Back SAV - 1370 x 50m"
+                "PRT-ROLL-SAV-0006": "125mic ASLAN DFP33 Floor SAV Print N Go - 1370mm x 25m",
+                "PRT-ROLL-SAV-0007": "75mic Iridescent  Rainbow Silver - Brite Overall - 1220mm x 50m",
+                "PRT-ROLL-SAV-0008": "75mic Vinyl Efx Smooth Mirri Gold 3102 - 1220 x 45.7m",
+                "PRT-ROLL-SAV-0009": "80mic Poli Print 805 -Matt White White Back SAV - 1370mm  x 50m",
+                "PRT-ROLL-SAV-0010": "75mic Vinyl Efx Smooth Mirri Silver 3101 - 1220 x 45.7m",
+                "PRT-ROLL-SAV-0012": "100mic Orafol Orajet 3162XRA Gloss White Removable Grey Rapid Air 1370mm 50m",
+                "PRT-ROLL-SIGN-0002": "65mic SIGN VINYL Ri-Mark Platinum 801 Gloss Black - 1220 x 1M  (50M rolls)",
+                "PRT-ROLL-SIGN-0005": "65mic SIGN VINYL Ri-Mark Platinum 800 Gloss White - 1220 x 1M  (50M rolls)"
             },
             group4: {
                 "PRT-SHT-ACR-0001": "2mm Clear - 153274 Perspex Clear XT - 1020x760mm",
                 "PRT-SHT-ACR-0002": "3mm Clear - 153273 Perspex Clear XT - 1020x760mm",
                 "PRT-SHT-ACR-0003": "5mm Clear - 153273 Perspex Clear XT - 1020x760mm",
-                "PRT-SHT-ACR-0004": "3mm Opal - 152282 Perspex Opal 030 XT - 1020x760mm",
-                "PRT-SHT-ACR-0005": "5mm Opal - 152281 Perspex Opal 030 XT - 1020x760mm",
-                "PRT-SHT-ACR-0006": "3mm White - 108006 Perspex White XT - 1020x760mm",
-                "PRT-SHT-ACR-0007": "5mm White - 108005 Perspex White XT - 1020x760mm",
-                "PRT-SHT-ACR-0008": "10mm Clear - 153270 Perspex Clear XT - 1020x760mm"
+                "PRT-SHT-ACR-0004": "3mm White - 150931 Perspex White XT - 1020x760mm",
+                "PRT-SHT-ACR-0005": "5mm White - 150932 Perspex White XT - 1020x760mm",
+                "PRT-SHT-ACR-0006": "3mm Black - 150923 Perspex Black XT - 1020x760mm",
+                "PRT-SHT-ACR-0007": "5mm Black - 150924 Perspex Black XT - 1020x760mm",
+                "PRT-SHT-ACR-0008": "3mm S2 000 - Single Sided Frosted Acrylic - 1010x760mm"
             },
             group5: {
                 "PRT-SHT-COR-0001": "E FLUTE 180DC/120KB - 1067x1575mm - FSC",
                 "PRT-SHT-COR-0002": "EB FLUTE 180DC/120KB - 1065x1575mm - FSC",
                 "PRT-SHT-COR-0004": "EB FLUTE 180DC/120KB - 1600x2150mm - FSC",
-                "PRT-SHT-COR-0005": "EB FLUTE 180DC/120KB - 2400x1600mm - FSC",
-                "PRT-SHT-COR-0007": "3mm XANITA - 1830x1830mm - FSC",
-                "PRT-SHT-COR-0008": "5mm XANITA - 1830x1830mm - FSC",
-                "PRT-SHT-COR-0009": "7mm XANITA - 1830x1830mm - FSC",
-                "PRT-SHT-COR-0010": "10mm XANITA - 1830x1830mm - FSC",
-                "PRT-SHT-COR-0011": "15mm XANITA - 1830x1830mm - FSC",
-                "PRT-SHT-COR-0012": "20mm XANITA - 1830x1830mm - FSC",
-                "PRT-SHT-COR-0013": "B FLUTE 180DC/120KB - 1500 x 1850mm - FSC"
+                "PRT-SHT-COR-0006": "E FLUTE 180DC/120KB - 1600x2150mm - FSC",
+                "PRT-SHT-COR-0009": "E FLUTE 180DC/120KB - 1575x1065mm - FSC",
+                "PRT-SHT-COR-0011": "EB FLUTE 180DC/120KB - 1575x1065mm - FSC",
+                "PRT-SHT-COR-0012": "E 190Y125D - 1040x1600mm - FSC 1F - DS Smith",
+                "PRT-SHT-COR-0014": "N 190Y125W - 1350x1950mm - FSC 1F - DS Smith",
+                "PRT-SHT-XAN-0001": "16mm White Xanita Board - 1220x2440mm - FSC",
+                "PRT-SHT-XAN-0002": "16mm Kraft Xanita Board - 1220x2440mm - FSC",
+                "PRT-SHT-XAN-0003": "10mm Xanita, Aspect, Kraft, 1220mm x 2440mm"
             },
             group6: {
                 "PRT-SHT-DB-0002": "1500mic Libra GCDB - 1550x1040mm - FSC",
                 "PRT-SHT-DB-0003": "1250mic Libra GCDB - 1550x1040mm - FSC",
                 "PRT-SHT-DB-0005": "1250mic Libra GCDB - 1850x1250mm - FSC",
-                "PRT-SHT-DB-0006": "850mic Libra GCDB - 1550x1040mm - FSC",
-                "PRT-SHT-DB-0007": "850mic Libra GCDB - 1850x1250mm - FSC",
-                "PRT-SHT-DB-0008": "850mic Libra GCDB - 1250x850mm - FSC",
-                "PRT-SHT-DB-0009": "500mic Libra GCDB - 1550x1040mm - FSC",
-                "PRT-SHT-DB-0010": "800mic Libra MCB - 1250x850mm - FSC",
-                "PRT-SHT-DB-0011": "1000mic Libra MCB - 1250x850mm - FSC",
-                "PRT-SHT-DB-0012": "850mic Colorplan Ebony Black DB - 1550x1040mm - FSC",
-                "PRT-SHT-DB-0013": "1250mic INVERCOTE CREATO GLOSS FINISH - 740x1040mm - FSC"
+                "PRT-SHT-DB-0006": "2000mic Premium Print GCDB - 1040x1600mm - FSC",
+                "PRT-SHT-DB-0007": "2000mic Premium Print GCDB - 1850x1250mm - FSC",
+                "PRT-SHT-FBB-0005": "455mic Metsa Pro Cream Back FBB - 1250x1850mm - FSC",
+                "PRT-SHT-FBB-0007": "455mic Metsa Pro Cream Back FBB - 1575x1065mm - FSC",
+                "PRT-SHT-FBB-0008": "300mic/270gsm Mirri H Gold FBB - 1000x700mm",
+                "PRT-SHT-FBB-0009": "420mic/370gsm Mirri H Gold FBB - 1000x700mm",
+                "PRT-SHT-FBB-0010": "420mic/370gsm Mirri H Silver FBB - 1000x700mm",
+                "PRT-SHT-FBB-0011": "300mic/270gsm Mirri H Silver FBB - 1000x700mm"
             },
             group7: {
                 "PRT-SHT-KON-0001": "SYMBOL F/L SATIN 53X75 200GSM 750 X 320 (Packed in 150)",
                 "PRT-SHT-KON-0002": "UPM FINESSE SILK 250GSM 53X75 CUT TO: 750 X 320 (Packed in 250)",
                 "PRT-SHT-KON-0003": "UPM FINESSE SILK 300GSM 53X75 CUT TO: 750 X 320 (Packed in 250)",
-                "PRT-SHT-KON-0004": "UPM FINESSE SILK 350GSM 53X75 CUT TO: 750 X 320 (Packed in 125)",
-                "PRT-SHT-KON-0005": "R5 - 300gsm Digital Enhanced Silk - 320x450mm - FSC (Packed in 250)",
-                "PRT-SHT-KON-0006": "R5 - 300gsm Digital Enhanced Matt - 320x450mm - FSC (Packed in 250)",
-                "PRT-SHT-KON-0007": "R5 - 300gsm Digital Enhanced Gloss - 320x450mm - FSC (Packed in 250)",
-                "PRT-SHT-KON-0008": "SRA3 - 300gsm Digital Enhanced Silk - 320x450mm - FSC (Packed in 250)",
-                "PRT-SHT-KON-0009": "SRA3 - 300gsm Digital Enhanced Matt - 320x450mm - FSC (Packed in 250)"
+                "PRT-SHT-KON-0004": "200GSM SILK SRA3 (320X450) - 1000 SHEETS",
+                "PRT-SHT-KON-0005": "250GSM SILK SRA3 (320X450) - 1000 SHEETS",
+                "PRT-SHT-KON-0006": "300GSM SILK SRA3 (320X450) - 1000 SHEETS",
+                "PRT-SHT-KON-0007": "270mic DIGITUFF POLYESTER 450x320mm (Packed in 100)",
+                "PRT-SHT-KON-0008": "70g E-Digital S/A Laser Sol Perm 450x320mm (Packed in 250)",
+                "PRT-SHT-KON-0009": "UPM FINESSE SILK 200GSM 72x102 CUT TO: 1020 X 330 (Packed in 250)"
             },
             group8: {
                 "PRT-SHT-PLA-0001": "2mm Clear PETG - 1025x1250mm",
                 "PRT-SHT-PLA-0002": "470mic VIPRINT ELEGANCE WHITE PP G02 - 1200x800mm",
                 "PRT-SHT-PLA-0003": "1mm Plyform M White PLY 2361 Matt HIPS - 820mm x 1240mm",
-                "PRT-SHT-PLA-0004": "3mm White FOAMEX PREMIUM - 1220x2440mm",
-                "PRT-SHT-PLA-0005": "5mm White FOAMEX PREMIUM - 1220x2440mm",
-                "PRT-SHT-PLA-0006": "10mm White FOAMEX PREMIUM - 1220x2440mm",
-                "PRT-SHT-PLA-0007": "20mm White FOAMEX PREMIUM - 1220x2440mm"
+                "PRT-SHT-PLA-0005": "1.4mm Plyform G White PLY 2361 Gloss HIPS - 1020mm x  1600mm",
+                "PRT-SHT-PLA-0006": "1mm Clear PETG - 1250 x 1025mm",
+                "PRT-SHT-PLA-0007": "1.5mm Clear PETG - 1250 x 1025mm",
+                "PRT-SHT-PLA-0008": "0.5mm Clear PETG - 1250 x 1025mm"
             }
         };
 
-        // Handle material group selection
         document.getElementById('materialGroup').addEventListener('change', function() {
             const group = this.value;
             const materialSelect = document.getElementById('material');
@@ -404,7 +401,6 @@
             }
         }
 
-        // Form submission
         document.getElementById('stockForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -414,7 +410,6 @@
             const operator = document.getElementById('operator').value;
             const group = document.getElementById('materialGroup').value;
             
-            // Validate quantity (must be whole or .5)
             if (quantity % 0.5 !== 0) {
                 showStatus("Quantity must be whole numbers or .5 increments", "error");
                 return;
@@ -444,7 +439,6 @@
                 
                 showStatus("✓ Entry recorded successfully!", "success");
                 
-                // Reset after 2 seconds
                 setTimeout(() => {
                     resetForm();
                 }, 2000);
