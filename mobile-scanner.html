@@ -56,11 +56,53 @@
             overflow: hidden;
             margin-bottom: 25px;
             height: 300px;
+            position: relative;
         }
 
         #reader {
             width: 100%;
             height: 100%;
+        }
+
+        .start-camera-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .start-camera-overlay.hidden {
+            display: none;
+        }
+
+        .start-camera-btn {
+            background: rgba(74, 25, 66, 0.8);
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .start-camera-btn:hover {
+            background: rgba(74, 25, 66, 1);
+            border-color: white;
+            transform: scale(1.05);
+        }
+
+        .camera-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
         }
 
         .material-info {
@@ -195,7 +237,6 @@
             display: block;
         }
 
-        /* Number input specific styling */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             opacity: 1;
@@ -209,6 +250,10 @@
         
         <div class="scanner-container">
             <div id="reader"></div>
+            <div class="start-camera-overlay" id="cameraOverlay">
+                <div class="camera-icon">📷</div>
+                <button class="start-camera-btn" onclick="startCamera()">Start Camera</button>
+            </div>
         </div>
 
         <div class="material-info" id="materialInfo">
@@ -262,10 +307,8 @@
     </div>
 
     <script>
-        // IMPORTANT: Replace this with your Google Apps Script web app URL
         const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby-8x2Z_cNcyMrAohMtZvOHcYK2RNDQfv9q0E45KLzbcSGeJpunR_awAyRULqMGFxUeFw/exec';
 
-        // Material database - this will be populated from your Excel file
         const MATERIALS = {
             "PRT-ROLL-ADH-0001": "900E Medium Tack Paper Application Tape - 1220 x 91.4m",
             "PRT-ROLL-ADH-0002": "30mic Ultracrystaline Optically Clear Mount Film - 1050 x 50m",
@@ -348,9 +391,9 @@
 
         let html5QrCode;
         let scannedCode = null;
+        let isScanning = false;
 
-        // Initialize scanner
-        function initScanner() {
+        function startCamera() {
             html5QrCode = new Html5Qrcode("reader");
             
             const config = { 
@@ -363,9 +406,12 @@
                 config,
                 onScanSuccess,
                 onScanError
-            ).catch(err => {
+            ).then(() => {
+                document.getElementById('cameraOverlay').classList.add('hidden');
+                isScanning = true;
+            }).catch(err => {
                 console.error("Scanner error:", err);
-                showStatus("Camera access denied or not available", "error");
+                showStatus("Camera access denied. Please check browser permissions.", "error");
             });
         }
 
@@ -376,13 +422,16 @@
                 document.getElementById('materialName').textContent = MATERIALS[decodedText];
                 document.getElementById('materialInfo').classList.add('show');
                 
-                // Vibrate on success
                 if (navigator.vibrate) {
                     navigator.vibrate(200);
                 }
                 
-                // Stop scanner temporarily
-                html5QrCode.stop();
+                if (html5QrCode && isScanning) {
+                    html5QrCode.stop().then(() => {
+                        isScanning = false;
+                        document.getElementById('cameraOverlay').classList.remove('hidden');
+                    });
+                }
             } else {
                 showStatus("Unknown material code: " + decodedText, "error");
                 document.body.classList.add('error');
@@ -391,7 +440,7 @@
         }
 
         function onScanError(errorMessage) {
-            // Ignore scan errors (they happen constantly while scanning)
+            // Ignore continuous scan errors
         }
 
         function resetForm() {
@@ -400,8 +449,14 @@
             scannedCode = null;
             document.getElementById('statusMessage').classList.remove('show');
             
-            // Restart scanner
-            initScanner();
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().then(() => {
+                    isScanning = false;
+                    document.getElementById('cameraOverlay').classList.remove('hidden');
+                });
+            } else {
+                document.getElementById('cameraOverlay').classList.remove('hidden');
+            }
         }
 
         function showStatus(message, type) {
@@ -423,7 +478,6 @@
             }
         }
 
-        // Form submission
         document.getElementById('stockForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -436,7 +490,6 @@
             const quantity = parseFloat(document.getElementById('quantity').value);
             const operator = document.getElementById('operator').value;
             
-            // Validate quantity (must be whole or .5)
             if (quantity % 0.5 !== 0) {
                 showStatus("Quantity must be whole numbers or .5 increments", "error");
                 return;
@@ -464,12 +517,10 @@
                 
                 showStatus("✓ Entry recorded successfully!", "success");
                 
-                // Vibrate on success
                 if (navigator.vibrate) {
                     navigator.vibrate([100, 50, 100]);
                 }
                 
-                // Reset after 2 seconds
                 setTimeout(() => {
                     resetForm();
                 }, 2000);
@@ -479,6 +530,6 @@
                 showStatus("Failed to record entry. Check your internet connection.", "error");
             }
         });
-
-        // Start scanner on page load
-        window.addEventListener('load', initScanner)
+    </script>
+</body>
+</html>
