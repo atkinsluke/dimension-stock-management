@@ -220,15 +220,183 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Burger Menu Styles */
+        .burger-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-menu:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .burger-icon {
+            width: 24px;
+            height: 18px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .burger-line {
+            width: 100%;
+            height: 2px;
+            background: white;
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-menu.active .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .burger-menu.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.active .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: rgba(30, 58, 95, 0.95);
+            backdrop-filter: blur(10px);
+            transition: right 0.3s ease;
+            z-index: 999;
+            padding: 80px 20px 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-menu.active {
+            right: 0;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 15px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            padding-left: 10px;
+        }
+
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .nav-current {
+            background: rgba(74, 25, 66, 0.3) !important;
+            padding-left: 10px !important;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                width: 100%;
+                right: -100%;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Burger Menu -->
+    <div class="burger-menu" id="burgerMenu">
+        <div class="burger-icon">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu" id="navMenu">
+        <div class="nav-title">Navigation</div>
+        <ul class="nav-links">
+            <li><a href="index.html"><span class="nav-icon">🏠</span>Home</a></li>
+            <li><a href="mobile-scanner.html"><span class="nav-icon">📱</span>Mobile Scanner</a></li>
+            <li><a href="desktop-entry.html"><span class="nav-icon">💻</span>Desktop Entry</a></li>
+            <li><a href="stock-request.html" class="nav-current"><span class="nav-icon">📦</span>Request Stock</a></li>
+            <li><a href="time-logging.html"><span class="nav-icon">⏰</span>Log Hours</a></li>
+            <li><a href="dashboard.html"><span class="nav-icon">📊</span>Stock Dashboard</a></li>
+            <li><a href="time-dashboard.html"><span class="nav-icon">⏱️</span>Time Dashboard</a></li>
+            <li><a href="qr-display.html"><span class="nav-icon">📺</span>QR Display</a></li>
+            <li><a href="qr-generator.html"><span class="nav-icon">🖨️</span>Print QR Codes</a></li>
+            <li><a href="settings.html"><span class="nav-icon">⚙️</span>Settings</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
         <h1>Dimension Print Services</h1>
         <p class="subtitle">Stock Request System</p>
 
         <div class="info-box">
             📦 Request stock items to be ordered. An email will be sent to purchasing immediately.
+        </div>
+        
+        <div id="loadingMessage" style="text-align: center; padding: 20px; font-size: 1.1rem;">
+            Loading materials database...
         </div>
         
         <div class="form-card">
@@ -293,12 +461,33 @@
     <script>
         // IMPORTANT: Replace with your Stock Request Apps Script URL
         const STOCK_REQUEST_URL = 'https://script.google.com/macros/s/AKfycbyT85ZQH7q9_J6027PpW5ZXbNOkGLA2zxBPgDS9NIhZvDGjwkwmvqZPHvEhwemjnV-d/exec';
-        
-        // IMPORTANT: Replace with your Operators Apps Script URL
-        const OPERATORS_API_URL = 'https://script.google.com/macros/s/AKfycbyT85ZQH7q9_J6027PpW5ZXbNOkGLA2zxBPgDS9NIhZvDGjwkwmvqZPHvEhwemjnV-d/exec';
+        const OPERATORS_API_URL = 'https://script.google.com/macros/s/AKfycbwtXvrra60t2mg75VYifnt1gxUR1yMAw8t8Rm5dq9vdEJQqoulXaD-W6zbqJHhh0oHR/exec';
+        const MATERIALS_API_URL = 'https://script.google.com/macros/s/AKfycbxfwTCFpqG355ARlOhrmkBUaMh9LP82uYTxSdwlDA722HS0fwwkOJymv3DeTtmOGKKMgQ/exec';
 
-        // Material database organized by groups
-        const MATERIAL_GROUPS = {
+        let MATERIAL_GROUPS = {};
+        let materialsLoaded = false;
+
+        async function loadMaterials() {
+            try {
+                const response = await fetch(MATERIALS_API_URL);
+                const data = await response.json();
+                
+                if (data.materialGroups) {
+                    MATERIAL_GROUPS = data.materialGroups;
+                    materialsLoaded = true;
+                    document.getElementById('loadingMessage').style.display = 'none';
+                    console.log('Material groups loaded:', Object.keys(MATERIAL_GROUPS).length, 'groups');
+                } else {
+                    throw new Error('No material groups data received');
+                }
+            } catch (error) {
+                console.error('Failed to load materials:', error);
+                showStatus("Failed to load materials database. Please refresh the page.", "error");
+            }
+        }
+
+        // Backup material database (will be replaced by Google Sheets data)
+        const BACKUP_MATERIAL_GROUPS = {
             group1: {
                 "PRT-ROLL-ADH-0001": "900E Medium Tack Paper Application Tape - 1220 x 91.4m",
                 "PRT-ROLL-ADH-0002": "30mic Ultracrystaline Optically Clear Mount Film - 1050 x 50m",
@@ -400,28 +589,35 @@
                 const response = await fetch(OPERATORS_API_URL);
                 const data = await response.json();
                 
-                if (data.status === 'success') {
+                if (data.operators) {
                     populateOperatorDropdown(data.operators);
+                } else {
+                    console.error('Error loading operators:', data.error);
+                    useFallbackOperators();
                 }
             } catch (error) {
-                console.error('Error loading operators:', error);
-                // Use fallback
-                populateOperatorDropdown({
-                    'Mark McCann': 'Perm',
-                    'John Pugh': 'Perm',
-                    'Andre Zinenko': 'Perm',
-                    'Nathan Dharwhker': 'Perm',
-                    'Inga Klevasa': 'Perm',
-                    'Maciej Chicos': 'Perm',
-                    'Tomas Vascillica': 'Perm',
-                    'Kamil Bugenski': 'Perm',
-                    'Vascillica Cosma': 'Perm',
-                    'Jamie Bell': 'Perm',
-                    'Luke Atkins': 'Perm',
-                    'Laser Agency Staff': 'Agency',
-                    'Print Agency Staff': 'Agency'
-                });
+                console.error('Error fetching operators:', error);
+                useFallbackOperators();
             }
+        }
+
+        function useFallbackOperators() {
+            const fallbackOperators = {
+                'Mark McCann': 'Perm',
+                'John Pugh': 'Perm',
+                'Andre Zinenko': 'Perm',
+                'Nathan Dharwhker': 'Perm',
+                'Inga Klevasa': 'Perm',
+                'Maciej Chicos': 'Perm',
+                'Tomas Vascillica': 'Perm',
+                'Kamil Bugenski': 'Perm',
+                'Vascillica Cosma': 'Perm',
+                'Jamie Bell': 'Perm',
+                'Luke Atkins': 'Perm',
+                'Laser Agency Staff': 'Agency',
+                'Print Agency Staff': 'Agency'
+            };
+            populateOperatorDropdown(fallbackOperators);
         }
 
         function populateOperatorDropdown(operators) {
@@ -447,11 +643,20 @@
                 materialSelect.innerHTML = '<option value="">Select material...</option>';
                 
                 const materials = MATERIAL_GROUPS[group];
-                for (const [code, description] of Object.entries(materials)) {
-                    const option = document.createElement('option');
-                    option.value = code;
-                    option.textContent = `${code} - ${description}`;
-                    materialSelect.appendChild(option);
+                console.log('Selected group:', group);
+                console.log('Available groups:', Object.keys(MATERIAL_GROUPS));
+                console.log('Materials for group:', materials);
+                
+                if (materials) {
+                    for (const [code, description] of Object.entries(materials)) {
+                        const option = document.createElement('option');
+                        option.value = code;
+                        option.textContent = `${code} - ${description}`;
+                        materialSelect.appendChild(option);
+                    }
+                } else {
+                    console.error('No materials found for group:', group);
+                    materialSelect.innerHTML = '<option value="">No materials found for this group</option>';
                 }
             } else {
                 materialSelect.disabled = true;
@@ -528,6 +733,47 @@
                 console.error('Error:', error);
                 showStatus("Failed to submit request. Check your internet connection.", "error");
             }
+        });
+
+        // Burger Menu Functionality
+        function initBurgerMenu() {
+            const burgerMenu = document.getElementById('burgerMenu');
+            const navMenu = document.getElementById('navMenu');
+            const navOverlay = document.getElementById('navOverlay');
+
+            function toggleMenu() {
+                burgerMenu.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                navOverlay.classList.toggle('active');
+            }
+
+            function closeMenu() {
+                burgerMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+                navOverlay.classList.remove('active');
+            }
+
+            burgerMenu.addEventListener('click', toggleMenu);
+            navOverlay.addEventListener('click', closeMenu);
+
+            // Close menu when clicking a nav link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+
+            // Close menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+        }
+
+        // Load materials and operators when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMaterials();
+            loadOperators();
+            initBurgerMenu();
         });
     </script>
 </body>

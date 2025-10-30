@@ -223,6 +223,33 @@
     </style>
 </head>
 <body>
+    <!-- Burger Menu -->
+    <div class="burger-menu" id="burgerMenu" style="position: fixed; top: 20px; right: 20px; z-index: 1000; cursor: pointer; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 12px;">
+        <div style="width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="width: 100%; height: 2px; background: white; border-radius: 1px;"></div>
+            <div style="width: 100%; height: 2px; background: white; border-radius: 1px;"></div>
+            <div style="width: 100%; height: 2px; background: white; border-radius: 1px;"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav id="navMenu" style="position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; background: rgba(30, 58, 95, 0.95); transition: right 0.3s ease; z-index: 999; padding: 80px 20px 20px;">
+        <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: white;">Navigation</div>
+        <ul style="list-style: none;">
+            <li><a href="index.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">🏠 Home</a></li>
+            <li><a href="mobile-scanner.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">📱 Mobile Scanner</a></li>
+            <li><a href="desktop-entry.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">💻 Desktop Entry</a></li>
+            <li><a href="stock-request.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">📦 Request Stock</a></li>
+            <li><a href="time-logging.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">⏰ Log Hours</a></li>
+            <li><a href="dashboard.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">📊 Stock Dashboard</a></li>
+            <li><a href="time-dashboard.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">⏱️ Time Dashboard</a></li>
+            <li><a href="qr-display.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">📺 QR Display</a></li>
+            <li><a href="qr-generator.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0;">🖨️ Print QR Codes</a></li>
+            <li><a href="settings.html" style="color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 0; background: rgba(74, 25, 66, 0.3); padding-left: 10px;">⚙️ Settings</a></li>
+        </ul>
+    </nav>
+    <div id="navOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 998; opacity: 0; visibility: hidden; transition: all 0.3s ease;"></div>
+
     <div class="container">
         <h1>Dimension Print Services</h1>
         <p class="subtitle">System Settings</p>
@@ -416,6 +443,26 @@
 
         // Load operators on page load
         loadOperators();
+
+        // Simple burger menu functionality
+        document.getElementById('burgerMenu').onclick = function() {
+            const menu = document.getElementById('navMenu');
+            const overlay = document.getElementById('navOverlay');
+            if (menu.style.right === '0px') {
+                menu.style.right = '-100%';
+                overlay.style.opacity = '0';
+                overlay.style.visibility = 'hidden';
+            } else {
+                menu.style.right = '0px';
+                overlay.style.opacity = '1';
+                overlay.style.visibility = 'visible';
+            }
+        };
+        document.getElementById('navOverlay').onclick = function() {
+            document.getElementById('navMenu').style.right = '-100%';
+            this.style.opacity = '0';
+            this.style.visibility = 'hidden';
+        };
     </script>
 </body>
 </html>
