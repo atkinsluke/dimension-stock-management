@@ -1,0 +1,425 @@
+/* === NEO-BRUTALISM GLOBAL THEME OVERRIDES === */
+
+body, body.error, body.success {
+    background-color: #fdfcf8 !important; /* off-white cream */
+    background-image: radial-gradient(rgba(0,0,0,0.1) 1.5px, transparent 1.5px) !important;
+    background-size: 24px 24px !important;
+    color: #111 !important;
+    animation: none !important;
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 100vh;
+}
+
+/* Mobile responsive body layout */
+@media (max-width: 768px) {
+    body, body.error, body.success {
+        display: block !important;
+    }
+}
+
+.container {
+    flex: 1;
+    padding: 60px 40px !important;
+    max-width: none !important;
+    width: 100%;
+    margin: 0 !important;
+    background: transparent !important;
+    overflow-y: auto;
+}
+@media (max-width: 768px) {
+    .container {
+        padding: 80px 20px 40px !important; /* Room for burger menu */
+    }
+}
+
+/* Typography Overrides */
+h1 {
+    color: #111 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+    letter-spacing: -1px !important;
+    text-align: left !important;
+    border-bottom: 2px solid #111 !important;
+    padding-bottom: 20px !important;
+    margin-bottom: 30px !important;
+}
+
+.subtitle, .tagline, .section-title {
+    color: #333 !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+    border: none !important; /* Overriding border-bottom just in case */
+}
+
+/* Cards & Layout */
+.card, .form-card, .scanner-container, .material-info, .secondary-grid .card {
+    background: #fff !important;
+    border: 2px solid #111 !important;
+    border-radius: 4px !important;
+    color: #111 !important;
+    box-shadow: 4px 4px 0px #111 !important;
+    transition: all 0.1s ease !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+}
+
+.card:hover {
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 6px 6px 0px #111 !important;
+    background: #fff !important;
+    border-color: #111 !important;
+}
+
+.card:active {
+    transform: translate(2px, 2px) !important;
+    box-shadow: 2px 2px 0px #111 !important;
+}
+
+.card::before {
+    display: none !important; /* Remove frosted glass gradients */
+}
+
+/* Card Icons */
+.card-icon {
+    font-size: 2.5rem !important;
+    border: 2px solid #111;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fdfcf8;
+    box-shadow: 2px 2px 0px #111;
+    margin-bottom: 20px !important;
+}
+
+.card-title {
+    font-size: 1.3rem !important;
+    margin-bottom: 8px !important;
+}
+
+.card-description {
+    font-size: 0.95rem !important;
+    opacity: 1 !important;
+    color: #444 !important;
+}
+
+.card-badge {
+    background: #ff90e8 !important;
+    color: #111 !important;
+    border: 2px solid #111 !important;
+    font-weight: bold !important;
+    padding: 4px 10px !important;
+    border-radius: 4px !important;
+}
+
+/* Form Elements */
+input, select, textarea {
+    background: #fff !important;
+    border: 2px solid #111 !important;
+    border-radius: 4px !important;
+    color: #111 !important;
+    font-weight: 500 !important;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.1) !important;
+}
+input:focus, select:focus {
+    box-shadow: 4px 4px 0px #ff90e8 !important;
+    border-color: #111 !important;
+    transform: translate(-1px, -1px);
+}
+label {
+    color: #111 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.5px !important;
+}
+.helper-text {
+    color: #555 !important;
+}
+select option {
+    background: #fff !important;
+    color: #111 !important;
+}
+
+/* Buttons */
+button, .start-camera-btn, .back-link a {
+    background: #fff !important;
+    border: 2px solid #111 !important;
+    color: #111 !important;
+    border-radius: 4px !important;
+    box-shadow: 3px 3px 0px #111 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.1s ease !important;
+}
+
+.back-link a {
+    display: inline-block;
+    padding: 12px 20px;
+    margin-top: 30px;
+}
+
+button:hover, .start-camera-btn:hover, .back-link a:hover {
+    background: #ff90e8 !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 5px 5px 0px #111 !important;
+    color: #111 !important;
+}
+button:active, .start-camera-btn:active, .back-link a:active {
+    transform: translate(2px, 2px) !important;
+    box-shadow: 1px 1px 0px #111 !important;
+}
+.submit-btn {
+    background: #ff90e8 !important;
+}
+.submit-btn:hover {
+    background: #ff6be0 !important;
+}
+.reset-btn {
+    background: #eee !important;
+}
+
+/* Status Messages */
+.status-message {
+    border: 2px solid #111 !important;
+    background: #fff !important;
+    color: #111 !important;
+    font-weight: bold !important;
+    box-shadow: 4px 4px 0px #111 !important;
+    border-radius: 4px !important;
+}
+.status-message.error {
+    background: #ffb3b3 !important; /* Soft red */
+}
+.status-message.success {
+    background: #bbf7d0 !important; /* Soft green */
+}
+
+/* Info Box */
+.info-box {
+    background: #ffabf0 !important; /* Lighter pink */
+    border: 2px solid #111 !important;
+    padding: 15px !important;
+    border-radius: 4px !important;
+    margin-bottom: 30px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+    color: #111 !important;
+    box-shadow: 4px 4px 0px #111 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.info-box i {
+    font-size: 1.5rem !important;
+    margin-right: 15px !important;
+}
+
+/* === SIDEBAR / NAVIGATION === */
+
+/* Sidebar specific overrides */
+.nav-menu {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 280px !important;
+    height: 100vh !important;
+    background: #111 !important; /* Solid black */
+    border-right: 2px solid #111 !important;
+    padding: 40px 20px !important;
+    display: flex;
+    flex-direction: column;
+    z-index: 100 !important;
+    transition: left 0.3s ease !important;
+    box-shadow: none !important;
+}
+
+.nav-title {
+    margin-bottom: 35px !important;
+    font-family: inherit;
+    font-size: 2.5rem !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: -2px !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.logo-accent {
+    color: #ff90e8 !important; /* Gumroad pink accent */
+}
+
+.nav-links {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.nav-links li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.nav-links a {
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    font-size: 1.05rem !important;
+    color: #ddd !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+    padding: 12px 15px !important;
+    margin-bottom: 8px !important;
+    border: 2px solid transparent !important;
+    transition: all 0.1s ease !important;
+}
+
+.nav-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    background: #fff !important;
+    border: 2px solid #111 !important;
+    border-radius: 6px !important;
+    color: #111 !important;
+    box-shadow: 2px 2px 0px #ff90e8 !important;
+    margin-right: 15px !important;
+    font-size: 1.2rem !important;
+    transition: all 0.1s ease !important;
+}
+
+.nav-links a:hover .nav-icon {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0px #ff90e8 !important;
+}
+
+.nav-links a:hover {
+    background: #222 !important;
+    color: #fff !important;
+    border: 2px solid #333 !important;
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0px #000 !important;
+}
+
+.nav-current {
+    background: #ff90e8 !important;
+    color: #111 !important;
+    border: 2px solid #ff90e8 !important;
+    box-shadow: none !important;
+}
+
+.nav-current .nav-icon {
+    background: #111 !important;
+    color: #fff !important;
+    box-shadow: 2px 2px 0px #fff !important;
+    border-color: #111 !important;
+}
+
+.nav-current:hover {
+    background: #ff90e8 !important;
+    color: #111 !important;
+    border: 2px solid #fff !important;
+}
+
+/* === MOBILE OVERRIDES === */
+
+.burger-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+    background: #fff !important;
+    border: 2px solid #111 !important;
+    border-radius: 4px !important;
+    padding: 15px !important;
+    box-shadow: 3px 3px 0px #111 !important;
+    transition: all 0.1s ease;
+}
+
+.burger-menu:hover {
+    background: #ff90e8 !important;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #111 !important;
+}
+
+.burger-menu:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #111 !important;
+}
+
+.burger-icon {
+    width: 24px;
+    height: 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.burger-line {
+    width: 100%;
+    height: 3px !important;
+    background: #111 !important;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+}
+
+.burger-menu.active .burger-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.burger-menu.active .burger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active .burger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed !important;
+        left: -100% !important;
+    }
+    .nav-menu.active {
+        left: 0 !important;
+        box-shadow: 8px 0 0px #111 !important; /* Thick shadow for sidebar */
+    }
+}
+
+@media (min-width: 769px) {
+    .burger-menu {
+        display: none !important;
+    }
+    .nav-overlay {
+        display: none !important;
+    }
+}
